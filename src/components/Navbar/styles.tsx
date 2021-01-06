@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Container = styled.nav`
@@ -8,14 +9,14 @@ export const Container = styled.nav`
   padding-left: 45px;
 `;
 
-export const LogoLink = styled.a`
+export const LogoLink = styled(Link)`
   text-decoration: none;
   cursor: pointer;
   display: flex;
   align-self: center;
 `;
 
-export const LogoText = styled.text`
+export const LogoText = styled.span`
   font-weight: bold;
   font-size: 24px;
   line-height: 33px;

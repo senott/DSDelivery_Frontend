@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -53,7 +54,7 @@ export const ActionSubTitle = styled.h3`
   }
 `;
 
-export const OrderButton = styled.a`
+export const OrderButton = styled(Link)`
   background-color: var(--primary-color);
   border-radius: 10px;
   height: 70px;

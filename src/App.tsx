@@ -1,14 +1,12 @@
 import React from 'react';
 
 import './App.css';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
+import Routes from './Routes';
 
 const App: React.FC = () => {
   return (
     <>
-      <Navbar />
-      <Home />
+      <Routes />
     </>
   );
 };

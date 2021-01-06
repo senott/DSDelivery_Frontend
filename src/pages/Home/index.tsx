@@ -27,7 +27,7 @@ const Home: React.FC = () => {
               Escolha o seu pedido e em poucos minutos <br />
               levaremos na sua porta.
             </ActionSubTitle>
-            <OrderButton href="/orders">FAZER PEDIDO</OrderButton>
+            <OrderButton to="/orders">FAZER PEDIDO</OrderButton>
           </Actions>
           <HomeImage>
             <img src={main} alt="Food being delivered" />

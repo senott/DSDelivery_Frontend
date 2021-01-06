@@ -6,7 +6,7 @@ import logo from '../../assets/images/logo.svg';
 const Navbar: React.FC = () => {
   return (
     <Container>
-      <LogoLink href="/">
+      <LogoLink to="/">
         <img src={logo} alt="DS Delivery" />
         <LogoText>DS Delivery</LogoText>
       </LogoLink>
