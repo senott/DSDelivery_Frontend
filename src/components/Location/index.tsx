@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import AsyncSelect from 'react-select/async';
-import OrderAddress from '../../dtos/OrderAddress';
+import { usePosition } from 'use-position';
 
+import OrderAddress from '../../dtos/OrderAddress';
 import getMapboxLocation from '../../services/getMapboxLocation';
 
 import {
@@ -26,14 +27,25 @@ interface LocationProps {
 }
 
 const Location: React.FC<LocationProps> = ({ onChangeLocation }) => {
-  const initialPosition = {
-    lat: 51.505,
-    lng: -0.09,
-  };
+  const { latitude, longitude, errorMessage } = usePosition(false);
 
   const [address, setAddress] = useState<Place>({
-    position: initialPosition,
+    position: {
+      lat: 51.505,
+      lng: -0.09,
+    },
   });
+
+  useEffect(() => {
+    if (latitude && longitude && !errorMessage) {
+      setAddress({
+        position: {
+          lat: latitude,
+          lng: longitude,
+        },
+      });
+    }
+  }, [latitude, longitude, errorMessage]);
 
   const loadOptions = async (
     inputValue: string,
@@ -67,31 +79,43 @@ const Location: React.FC<LocationProps> = ({ onChangeLocation }) => {
   return (
     <LocationContainer>
       <LocationContent>
-        <LocationTitle>
-          Selecione onde o pedido deverá ser entregue:
-        </LocationTitle>
-        <LocationSearchContainer>
-          <AsyncSelect
-            placeholder="Digite o endereço para entrega"
-            className="search"
-            loadOptions={loadOptions}
-            onChange={value => handleChangeSelect(value as Place)}
-          />
-        </LocationSearchContainer>
-        <MapContainer
-          center={address.position}
-          zoom={13}
-          scrollWheelZoom={false}
-          key={address.position.lat}
-        >
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker position={address.position}>
-            <Popup>{address.label}</Popup>
-          </Marker>
-        </MapContainer>
+        {(latitude && longitude && (
+          <>
+            <LocationTitle>
+              Selecione onde o pedido deverá ser entregue:
+            </LocationTitle>
+            <LocationSearchContainer>
+              <AsyncSelect
+                placeholder="Digite o endereço para entrega"
+                className="search"
+                loadOptions={loadOptions}
+                onChange={value => handleChangeSelect(value as Place)}
+              />
+            </LocationSearchContainer>
+            <MapContainer
+              center={address!.position}
+              zoom={13}
+              scrollWheelZoom={false}
+              key={address?.position.lat}
+            >
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={address!.position}>
+                <Popup>{address?.label}</Popup>
+              </Marker>
+            </MapContainer>
+          </>
+        )) || (
+          <>
+            <LocationTitle>Obtendo sua localização.</LocationTitle>
+            <LocationTitle>
+              Caso o mapa não apreça, você deverá permitir que esse site utilize
+              sua localização para realizar um pedido.
+            </LocationTitle>
+          </>
+        )}
       </LocationContent>
     </LocationContainer>
   );
