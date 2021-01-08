@@ -12,11 +12,20 @@ import formatPrice from '../../utils/formatPrice';
 
 interface ProductCardProps {
   product: Product;
+  selected: boolean;
+  handleSelectProduct: (product: Product) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  selected,
+  handleSelectProduct,
+}) => {
   return (
-    <CardContainer>
+    <CardContainer
+      onClick={() => handleSelectProduct(product)}
+      selected={selected}
+    >
       <CardTitle>{product.name}</CardTitle>
       <CardImage src={product.imageUri} alt={product.name} />
       <CardPrice>{formatPrice(product.price)}</CardPrice>

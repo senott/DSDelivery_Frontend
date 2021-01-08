@@ -1,18 +1,24 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const CardContainer = styled.div`
+interface CardContainerprops {
+  selected: boolean;
+}
+
+export const CardContainer = styled.div<CardContainerprops>`
   background-color: #fff;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   padding: 15px;
   cursor: pointer;
 
-  .selected {
-    border: 4px solid #008e5b;
-    box-sizing: border-box;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
-  }
+  ${props =>
+    props.selected &&
+    css`
+      border: 4px solid var(--primary-color);
+      box-sizing: border-box;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+      border-radius: 10px;
+    `}
 
   :hover {
     transform: scale(1.01);

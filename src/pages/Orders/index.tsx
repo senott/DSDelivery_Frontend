@@ -13,6 +13,26 @@ import { Container } from './styles';
 const Orders: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [orderAddress, setOrderAddress] = useState<OrderAddress>();
+  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [orderAmount, setOrderAmount] = useState(0);
+
+  const handleSelectProduct = (product: Product) => {
+    if (selectedProducts.includes(product)) {
+      const newSelectedProducts = selectedProducts.filter(
+        item => item.id !== product.id,
+      );
+
+      setSelectedProducts(newSelectedProducts);
+    } else {
+      setSelectedProducts(previous => [...previous, product]);
+    }
+  };
+
+  useEffect(() => {
+    setTotalProducts(selectedProducts.length);
+    setOrderAmount(selectedProducts.reduce((total, p) => total + p.price, 0));
+  }, [selectedProducts]);
 
   const steps = [
     'Selecione os produtos e localização',
@@ -37,9 +57,13 @@ const Orders: React.FC = () => {
     <>
       <Container>
         <StepsHeader title={'Siga as \r\netapas'} steps={steps} />
-        <ProductList products={products} />
+        <ProductList
+          products={products}
+          selectedProducts={selectedProducts}
+          handleSelectProduct={handleSelectProduct}
+        />
         <Location onChangeLocation={location => setOrderAddress(location)} />
-        <Summary />
+        <Summary totalProducts={totalProducts} orderAmount={orderAmount} />
       </Container>
       <Footer />
     </>

@@ -1,4 +1,5 @@
 import React from 'react';
+import formatPrice from '../../utils/formatPrice';
 import {
   SummaryContainer,
   SummaryContent,
@@ -8,17 +9,22 @@ import {
   OrderButton,
 } from './styles';
 
-const Summary: React.FC = () => {
+interface SummaryProps {
+  totalProducts: number;
+  orderAmount: number;
+}
+
+const Summary: React.FC<SummaryProps> = ({ totalProducts, orderAmount }) => {
   return (
     <SummaryContainer>
       <SummaryContent>
         <div>
           <SummarySelectedItems>
-            <SummaryStrong>2</SummaryStrong>
-            PEDIDOS SELECIONADOS
+            <SummaryStrong>{totalProducts}</SummaryStrong>
+            PRODUTOS SELECIONADOS
           </SummarySelectedItems>
           <SummaryTotalItems>
-            <SummaryStrong>R$ 100,00</SummaryStrong>
+            <SummaryStrong>{formatPrice(orderAmount)}</SummaryStrong>
             VALOR TOTAL
           </SummaryTotalItems>
         </div>
