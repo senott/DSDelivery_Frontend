@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './App.css';
+import './assets/styles/global.css';
 import Routes from './Routes';
 
 const App: React.FC = () => {

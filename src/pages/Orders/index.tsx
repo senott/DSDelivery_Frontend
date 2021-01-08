@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import Location from '../../components/Location';
 
 import ProductList from '../../components/ProductList';
 import StepsHeader from '../../components/StepsHeader';
+import OrderAddress from '../../dtos/OrderAddress';
 import Product from '../../dtos/Product';
 import api from '../../services/api';
 import { Container } from './styles';
 
 const Orders: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [orderAddress, setOrderAddress] = useState<OrderAddress>();
 
   const steps = [
     'Selecione os produtos e localização',
@@ -32,6 +35,7 @@ const Orders: React.FC = () => {
     <Container>
       <StepsHeader title={'Siga as \r\netapas'} steps={steps} />
       <ProductList products={products} />
+      <Location onChangeLocation={location => setOrderAddress(location)} />
     </Container>
   );
 };
