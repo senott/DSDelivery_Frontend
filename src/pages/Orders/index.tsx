@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import Footer from '../../components/Footer';
 import Location from '../../components/Location';
 
 import ProductList from '../../components/ProductList';
 import StepsHeader from '../../components/StepsHeader';
+import Summary from '../../components/Summary';
 import OrderAddress from '../../dtos/OrderAddress';
 import Product from '../../dtos/Product';
 import api from '../../services/api';
@@ -32,11 +34,15 @@ const Orders: React.FC = () => {
   }, []);
 
   return (
-    <Container>
-      <StepsHeader title={'Siga as \r\netapas'} steps={steps} />
-      <ProductList products={products} />
-      <Location onChangeLocation={location => setOrderAddress(location)} />
-    </Container>
+    <>
+      <Container>
+        <StepsHeader title={'Siga as \r\netapas'} steps={steps} />
+        <ProductList products={products} />
+        <Location onChangeLocation={location => setOrderAddress(location)} />
+        <Summary />
+      </Container>
+      <Footer />
+    </>
   );
 };
 
