@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Footer from '../../components/Footer';
 import Location from '../../components/Location';
 
@@ -6,6 +7,7 @@ import ProductList from '../../components/ProductList';
 import StepsHeader from '../../components/StepsHeader';
 import Summary from '../../components/Summary';
 import OrderAddress from '../../dtos/OrderAddress';
+import OrderPayload from '../../dtos/OrderPayload';
 import Product from '../../dtos/Product';
 import api from '../../services/api';
 import { Container } from './styles';
@@ -29,6 +31,24 @@ const Orders: React.FC = () => {
     }
   };
 
+  const handleSubmit = async () => {
+    const productsIds = selectedProducts.map(({ id }) => ({ id }));
+
+    const payload: OrderPayload = {
+      ...orderAddress!,
+      products: productsIds,
+    };
+
+    try {
+      const response = await api.post('/orders', payload);
+
+      toast.success(`Pedido nro. ${response.data.id} enviado com sucesso!`);
+      setSelectedProducts([]);
+    } catch (error) {
+      toast.error('Problema ao enviar o pedido! Tente novamente.');
+    }
+  };
+
   useEffect(() => {
     setTotalProducts(selectedProducts.length);
     setOrderAmount(selectedProducts.reduce((total, p) => total + p.price, 0));
@@ -46,7 +66,9 @@ const Orders: React.FC = () => {
 
         setProducts(response.data);
       } catch (error) {
-        console.log(error);
+        toast.error(
+          'Não foi possível recuperar a lista de produtos neste momento.',
+        );
       }
     }
 
@@ -63,7 +85,11 @@ const Orders: React.FC = () => {
           handleSelectProduct={handleSelectProduct}
         />
         <Location onChangeLocation={location => setOrderAddress(location)} />
-        <Summary totalProducts={totalProducts} orderAmount={orderAmount} />
+        <Summary
+          totalProducts={totalProducts}
+          orderAmount={orderAmount}
+          onSubmit={handleSubmit}
+        />
       </Container>
       <Footer />
     </>

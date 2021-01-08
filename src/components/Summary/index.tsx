@@ -12,9 +12,14 @@ import {
 interface SummaryProps {
   totalProducts: number;
   orderAmount: number;
+  onSubmit: () => void;
 }
 
-const Summary: React.FC<SummaryProps> = ({ totalProducts, orderAmount }) => {
+const Summary: React.FC<SummaryProps> = ({
+  totalProducts,
+  orderAmount,
+  onSubmit,
+}) => {
   return (
     <SummaryContainer>
       <SummaryContent>
@@ -28,7 +33,7 @@ const Summary: React.FC<SummaryProps> = ({ totalProducts, orderAmount }) => {
             VALOR TOTAL
           </SummaryTotalItems>
         </div>
-        <OrderButton>FAZER PEDIDO</OrderButton>
+        <OrderButton onClick={onSubmit}>FAZER PEDIDO</OrderButton>
       </SummaryContent>
     </SummaryContainer>
   );
